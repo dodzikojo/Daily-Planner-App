@@ -39,7 +39,7 @@ function createTimeBlock(hourBlockId, textAreaClass) {
     });
 
     let hourTextEl = $("<p>", {
-        class: "col-1 hour",
+        class: "pt-2 col-1 hour",
         text: hourBlockId
     })
 
@@ -70,8 +70,11 @@ function createTimeBlock(hourBlockId, textAreaClass) {
 $(document).on("click touchend", ".saveBtn", saveBtnClick);
 
 //TextArea change event.
-$(document).change( "#textArea", function(evt) {
-    $("#"+evt.target.id.replace("TextArea","")).addClass("unsavedBtn");
+$(document).change("#textArea", function (evt) {
+
+    $("#" + evt.target.id.replace("TextArea", "")).addClass("unsavedBtn");
+
+
 });
 
 
@@ -81,7 +84,7 @@ $("#clear-all-btn").on("click touchend", clearAllBtnClick);
 //Function to clear all for each hour
 function clearAllBtnClick(evt) {
     Swal.fire({
-        title: 'Are you sure you want to clear all entry?',
+        title: 'Are you sure you want to clear all saved entries?',
         showDenyButton: false,
         showCancelButton: true,
         confirmButtonText: 'Yes',
@@ -90,7 +93,7 @@ function clearAllBtnClick(evt) {
         if (result.isConfirmed) {
             allHours.forEach(hour => {
                 $("#" + hour.replace(" ", "") + 'TextArea').val("")
-                localStorage.removeItem(moment().format('L').replaceAll("/","-")+"-"+hour.replace(" ", ""))
+                localStorage.removeItem(moment().format('L').replaceAll("/", "-") + "-" + hour.replace(" ", ""))
             });
             Swal.fire('Schedule Cleared!', '', 'success')
         } else if (result.isDenied) {
@@ -103,20 +106,25 @@ function clearAllBtnClick(evt) {
 //Function to save the text
 async function saveBtnClick(evt) {
     var message = $("#" + evt.target.id + 'TextArea').val();
-    $("#"+evt.target.id.replace("TextArea","")).removeClass("unsavedBtn");
+    console.log("This is the event target id: " + evt.target.id)
+    if (evt.target.id !== "") {
+        if ($("#" + evt.target.id.replace("TextArea", "")).hasClass('unsavedBtn')) {
+            $("#" + evt.target.id.replace("TextArea", "")).removeClass("unsavedBtn");
+        }
+        localStorage.setItem(moment().format('L').replaceAll("/", "-") + "-" + evt.target.id, message)
 
-    localStorage.setItem(moment().format('L').replaceAll("/","-")+"-"+evt.target.id, message)
+        await Toast.fire({
+            icon: 'success',
+            title: 'Entry Saved!'
+        })
+    }
 
-    await Toast.fire({
-        icon: 'success',
-        title: 'Entry Saved!'
-    })
 }
 
 
 function getSaveditem(hoursArr) {
     hoursArr.forEach(hour => {
-        $("#" + hour.replace(" ", "") + 'TextArea').val(localStorage.getItem(moment().format('L').replaceAll("/","-")+"-"+hour.replace(" ", "")))
+        $("#" + hour.replace(" ", "") + 'TextArea').val(localStorage.getItem(moment().format('L').replaceAll("/", "-") + "-" + hour.replace(" ", "")))
     });
 }
 
