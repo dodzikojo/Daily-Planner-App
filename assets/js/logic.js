@@ -3,9 +3,22 @@ $('#currentDay').text(moment().format('dddd, MMMM Do'))
 
 //Get the current hour
 let currentHour = moment().format('h A')
+let allHours = getHours_CreateTimeBlocks()
+getSaveditem(allHours)
 
+console.log(allHours)
 
-getHours_CreateTimeBlocks()
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'bottom-right',
+    iconColor: 'white',
+    customClass: {
+        popup: 'colored-toast'
+    },
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true
+})
 
 
 function getHours_CreateTimeBlocks() {
@@ -13,15 +26,16 @@ function getHours_CreateTimeBlocks() {
     new Array(24).fill().forEach((acc, index) => {
         hR = moment({ hour: index });
 
-        if (hR.isSameOrAfter(moment().hour(9)) & hR.isSameOrBefore(moment().hour(17))) {
+        if (hR.isSameOrAfter(moment().hour(8)) & hR.isSameOrBefore(moment().hour(17))) {
+            items.push(hR.format('h A'));
             let hourBlockId = hR.format('h A') //Set to 12 Hour format
 
             if (currentHour === hourBlockId) {
-                createTimeBlock( hourBlockId, "present")
-            }else if (hR.isSameOrBefore(moment().hour(currentHour))) {
-                createTimeBlock( hourBlockId, "past")
+                createTimeBlock(hourBlockId, "present")
+            } else if (hR.isSameOrBefore(moment().hour(currentHour))) {
+                createTimeBlock(hourBlockId, "past")
             } else {
-                createTimeBlock( hourBlockId, "future")
+                createTimeBlock(hourBlockId, "future")
             }
         }
     })
@@ -47,22 +61,79 @@ function createTimeBlock(hourBlockId, textAreaClass) {
 
     let textAreaEl = $("<textarea>", {
         id: hourBlockId.replace(" ", "") + "TextArea",
-        class: "col-10 "+textAreaClass,
+        class: "col-10 " + textAreaClass,
+    }).attr({
+        "placeholder": "Add text",
+
     })
 
     let saveBtnEl = $("<button>", {
         class: "col-1 saveBtn",
-        id: hourBlockId.replace(" ", "")
-    });
+        id: hourBlockId.replace(" ", ""),
+    })
+
 
     let icon = $("<i>", {
         class: "fas fa-save"
     })
-
-
     hourTextEl.appendTo(newTimeBlockDivEl);
     textAreaEl.appendTo(newTimeBlockDivEl);
+
     icon.appendTo(saveBtnEl)
     saveBtnEl.appendTo(newTimeBlockDivEl);
     newTimeBlockDivEl.appendTo('#time-blocks');
+
+
 }
+
+//Save button event.
+$(document).on("click touchend", ".saveBtn", saveBtnClick);
+
+
+//Clear all button event. This clears all text
+$("#clear-all-btn").on("click touchend", clearAllBtnClick);
+
+//Function to clear all for each hour
+function clearAllBtnClick(evt) {
+    Swal.fire({
+        title: 'Are you sure you want to clear all?',
+        showDenyButton: false,
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        denyButtonText: `Don't save`,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            allHours.forEach(hour => {
+                localStorage.removeItem(hour.replace(" ", ""))
+            });
+            Swal.fire('Saved!', '', 'success')
+        } else if (result.isDenied) {
+            Swal.fire('Changes are not saved', '', 'info')
+        }
+    })
+
+}
+
+//Function to save the text
+async function saveBtnClick(evt) {
+    console.log("This is the button: " + evt.target.id)
+    var message = $("#" + evt.target.id + 'TextArea').val();
+    var savedItem = localStorage.getItem(evt.target.id)
+
+    localStorage.setItem(evt.target.id, message)
+
+    await Toast.fire({
+        icon: 'success',
+        title: 'Saved!'
+    })
+
+    evt.stopPropagation();
+}
+
+
+function getSaveditem(hoursArr) {
+    hoursArr.forEach(hour => {
+        $("#" + hour.replace(" ", "") + 'TextArea').val(localStorage.getItem(hour.replace(" ", "")))
+    });
+}
+
