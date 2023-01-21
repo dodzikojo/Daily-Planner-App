@@ -46,10 +46,7 @@ function getHours_CreateTimeBlocks() {
 //Create the time block using a loop
 //Apply a color class based on .past .present .future
 function createTimeBlock(hourBlockId, textAreaClass) {
-
     var hourBlockId = hR.format('h A') //Set to 12 Hour format
-
-
     let newTimeBlockDivEl = $("<div>", {
         class: "row time-block",
     });
@@ -72,18 +69,14 @@ function createTimeBlock(hourBlockId, textAreaClass) {
         id: hourBlockId.replace(" ", ""),
     })
 
-
     let icon = $("<i>", {
         class: "fas fa-save"
     })
     hourTextEl.appendTo(newTimeBlockDivEl);
     textAreaEl.appendTo(newTimeBlockDivEl);
-
     icon.appendTo(saveBtnEl)
     saveBtnEl.appendTo(newTimeBlockDivEl);
     newTimeBlockDivEl.appendTo('#time-blocks');
-
-
 }
 
 //Save button event.
@@ -104,6 +97,7 @@ function clearAllBtnClick(evt) {
     }).then((result) => {
         if (result.isConfirmed) {
             allHours.forEach(hour => {
+                $("#" + hour.replace(" ", "") + 'TextArea').val("")
                 localStorage.removeItem(hour.replace(" ", ""))
             });
             Swal.fire('Saved!', '', 'success')
