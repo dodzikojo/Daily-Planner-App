@@ -4,6 +4,10 @@ body {
   line-height: 1;
 }
 
+.fa, .far, .fas {
+  font-size: 30px;
+}
+
 textarea {
   background: transparent;
   border: none;
@@ -69,8 +73,12 @@ textarea {
   color: white;
 }
 
+.unsavedBtn {
+  background-color: red !important;
+}
+
 .saveBtn i:hover {
-  font-size: 20px;
+  font-size: 35px;
   transition: all 0.3s ease-in-out;
 }
 

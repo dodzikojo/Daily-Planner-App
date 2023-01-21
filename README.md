@@ -14,43 +14,30 @@ A simple calendar application taht allows a user to save events for each hour of
 
 
 ## Functionality
-* The app generates all hourly time blocks based on a function
+* All hourly time blocks are injected into the HTML using jQuery
+    ```html
+    <div class="container" id="time-blocks">
+    <!-- Timeblocks go here (injected using jQuery)-->
+
+    </div>
+    ```
+* The HTML injection is done using a function as below:
     ```javascript
     function createTimeBlock(hourBlockId, textAreaClass) {
-    var hourBlockId = hR.format('h A') //Set to 12 Hour format
-    let newTimeBlockDivEl = $("<div>", {
-        class: "row time-block",
-    });
-
-    let hourTextEl = $("<p>", {
-        class: "col-1 hour",
-        text: hourBlockId
-    })
-
-    let textAreaEl = $("<textarea>", {
-        id: hourBlockId.replace(" ", "") + "TextArea",
-        class: "col-10 " + textAreaClass,
-    }).attr({
-        "placeholder": "Add text",
-
-    })
-
-    let saveBtnEl = $("<button>", {
-        class: "col-1 saveBtn",
-        id: hourBlockId.replace(" ", ""),
-    })
-
-    let icon = $("<i>", {
-        class: "fas fa-save"
-    })
-    hourTextEl.appendTo(newTimeBlockDivEl);
-    textAreaEl.appendTo(newTimeBlockDivEl);
-    icon.appendTo(saveBtnEl)
-    saveBtnEl.appendTo(newTimeBlockDivEl);
-    newTimeBlockDivEl.appendTo('#time-blocks');
-}
+        .....
+        hourTextEl.appendTo(newTimeBlockDivEl);
+        textAreaEl.appendTo(newTimeBlockDivEl);
+        icon.appendTo(saveBtnEl)
+        saveBtnEl.appendTo(newTimeBlockDivEl);
+        newTimeBlockDivEl.appendTo('#time-blocks');
+        .....
+    }
     ```
 
-*
+* A "success toast" is displayed when the user saves an entry.
+    ![Saved Entry Toast Preview](previews/toast.png)
 
+* In addition, the user can choose to clear all entries using the "Clear All" button. A confirmation modal shows to confirm this action.
+
+## UI Preview
 ![Work Day Scheduler Preview](previews/main-image.png)
