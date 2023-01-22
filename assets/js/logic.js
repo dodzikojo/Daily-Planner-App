@@ -56,14 +56,16 @@ function createTimeBlock(hourBlockId, textAreaClass) {
         id: hourBlockId.replace(" ", ""),
     })
 
-    let icon = $("<i>", {
+    let saveBtnIconEl = $("<i>", {
+        id: hourBlockId.replace(" ", "")+"Icon",
         class: "fas fa-save"
     })
     hourTextEl.appendTo(newTimeBlockDivEl);
     textAreaEl.appendTo(newTimeBlockDivEl);
-    icon.appendTo(saveBtnEl)
+    saveBtnIconEl.appendTo(saveBtnEl)
     saveBtnEl.appendTo(newTimeBlockDivEl);
     newTimeBlockDivEl.appendTo('#time-blocks');
+
 }
 
 //Save button event.
@@ -76,7 +78,7 @@ $(document).change("#textArea", function (evt) {
 
 
 //Clear all button event. This clears all text
-$("#clear-all-btn").on("click touchend", clearAllBtnClick);
+$("#clear-all-btn").on("click", clearAllBtnClick);
 
 //Function to clear all for each hour
 function clearAllBtnClick(evt) {
@@ -126,7 +128,7 @@ async function saveBtnClick(evt) {
 
     targetId = evt.target.id.replace("Icon", "")
     textAreaEl = $("#" + targetId + "TextArea")
-    saveBtnEl = $("#"+targetId);
+    let saveBtnEl = $("#"+targetId)
 
     let message = textAreaEl.val();
 
@@ -157,7 +159,7 @@ const Toast = Swal.mixin({
         popup: 'colored-toast'
     },
     showConfirmButton: false,
-    timer: 500,
+    timer: 1000,
     timerProgressBar: true
 })
 
