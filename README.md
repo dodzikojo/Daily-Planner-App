@@ -35,9 +35,9 @@ A simple calendar application taht allows a user to save events for each hour of
     ```
 
 * A "success toast" is displayed when the user saves an entry.
-    ![Saved Entry Toast Preview](previews/toast.png)
+    <img src="previews/toast.png" alt="Saved Entry Toast Preview" width="600"/>
 
 * In addition, the user can choose to clear all entries using the "Clear All" button. A confirmation modal shows to confirm this action.
 
 ## UI Preview
-![Work Day Scheduler Preview](previews/main-image.png)
+<img src="previews/preview.gif" alt="Work Day Scheduler Preview" width="600"/>
