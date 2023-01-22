@@ -1,5 +1,5 @@
 //Set the current date
-$('#currentDay').text(moment().format('dddd, MMMM Do'))
+$('#currentDay').text(setGreeting() + "! It's " + moment().format('dddd, MMMM Do'))
 
 //Get the current hour
 let currentHour = moment().format('h A')
@@ -67,14 +67,11 @@ function createTimeBlock(hourBlockId, textAreaClass) {
 }
 
 //Save button event.
-$(document).on("click touchend", ".saveBtn", saveBtnClick);
+$(document).on("click", ".saveBtn", saveBtnClick);
 
 //TextArea change event.
 $(document).change("#textArea", function (evt) {
-
     $("#" + evt.target.id.replace("TextArea", "")).addClass("unsavedBtn");
-
-
 });
 
 
@@ -101,6 +98,25 @@ function clearAllBtnClick(evt) {
         }
     })
 
+}
+
+//Uses the time to set greeting to Good Morning/ Good Afternoon/ Good Evening
+function setGreeting() {
+    let hrs = moment().hour();
+    let mins = moment().minute();
+    let greet;
+
+
+    if (hrs >= 5 && ((hrs == 5 && mins >= 30) || (hrs > 5 && hrs < 12)))
+        greet = 'Good Morning';
+    else if (hrs >= 12 && hrs < 18)
+        greet = 'Good Afternoon';
+    else if ((hrs >= 18 && hrs < 24) || hrs > 0)
+        greet = 'Good Evening';
+    else
+        greet = 'Error';
+
+    return greet;
 }
 
 //Function to save the text
