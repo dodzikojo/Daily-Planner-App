@@ -75,9 +75,15 @@ textarea {
 }
 
 .saveBtn i:hover {
-  font-size: 20px;
+  font-size: 30px;
   transition: all 0.3s ease-in-out;
 }
+
+
+.fa, .fas {
+  font-size: 25px;
+}
+
 
 .colored-toast.swal2-icon-success {
   background-color: #a5dc86 !important;

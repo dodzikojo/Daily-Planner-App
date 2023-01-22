@@ -121,20 +121,25 @@ function setGreeting() {
 
 //Function to save the text
 async function saveBtnClick(evt) {
-    var message = $("#" + evt.target.id + 'TextArea').val();
-    console.log("This is the event target id: " + evt.target.id)
-    if (evt.target.id !== "") {
-        if ($("#" + evt.target.id.replace("TextArea", "")).hasClass('unsavedBtn')) {
-            $("#" + evt.target.id.replace("TextArea", "")).removeClass("unsavedBtn");
-        }
-        localStorage.setItem(moment().format('L').replaceAll("/", "-") + "-" + evt.target.id, message)
+    let textAreaEl
+    let targetId
 
-        await Toast.fire({
-            icon: 'success',
-            title: 'Entry Saved!'
-        })
+    targetId = evt.target.id.replace("Icon", "")
+    textAreaEl = $("#" + targetId + "TextArea")
+    saveBtnEl = $("#"+targetId);
+
+    let message = textAreaEl.val();
+
+    if (saveBtnEl.hasClass('unsavedBtn')) {
+        saveBtnEl.removeClass("unsavedBtn");
     }
 
+    localStorage.setItem(moment().format('L').replaceAll("/", "-") + "-" + targetId, message)
+
+    await Toast.fire({
+        icon: 'success',
+        title: 'Entry Saved!'
+    })
 }
 
 
